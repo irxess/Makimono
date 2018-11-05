@@ -1,0 +1,369 @@
+header {
+ text-align: center;
+ font-family: "Lucida Bright", "Palatino", "Times New Roman", "serif";
+ font-weight: bolder;
+ background-color: #616161;
+ color: #f5f5f5;
+ padding: 16px 0 5px 0;
+ font-size: 3.5em;
+}
+@media (max-width:69.99em) {
+ header {
+  background-color: #8bc34a;
+ }
+}
+.three-col {
+ display: flex;
+ flex-direction: column;
+ padding: 0;
+ margin: 0;
+ border: 0;
+}
+body {
+ font-size: 18pt;
+ font-family: "Candara", "Gill Sans", "Helvetica", "Arial", "sans-serif";
+ background-color: #333333;
+ display: flex;
+ flex-direction: column;
+ padding: 0;
+ margin: 0;
+ border: 0;
+}
+#three-col {
+ display: flex;
+ flex-direction: column;
+ padding: 0;
+ margin: 0;
+ border: 0;
+}
+@media (min-width:70em) {
+ #three-col {
+  flex-direction: row;
+  flex: 1;
+  flex-wrap: wrap;
+ }
+}
+ul {
+ list-style-type: none;
+ margin: 0em;
+ padding: 1em;
+ padding-bottom: 0.5em;
+}
+h2 {
+ font-size: 1.5em;
+ margin-left: 2em;
+ margin-bottom: 0em;
+}
+h3 {
+ margin-top: 0em;
+ margin-bottom: 0em;
+}
+hr {
+ color: #333333;
+ background-color: #333333;
+ border-color: #333333;
+ margin-bottom: 0;
+}
+.step-ingredient-list ul {
+ background: #dddddd;
+ padding-top: 0;
+ flex-direction: row;
+ flex: 1;
+ flex-wrap: wrap;
+}
+.step-ingredient-list ul li {
+ display: inline-block;
+ margin-right: 1.5em;
+}
+.nav ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+ overflow: hidden;
+ background-color: #8bc34a;
+}
+.nav li a:hover {
+ background-color: #558b2f;
+}
+#desktop-nav ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+ overflow: hidden;
+ background-color: #8bc34a;
+}
+#desktop-nav li a:hover {
+ background-color: #558b2f;
+}
+@media (min-width:70em) {
+ #desktop-nav {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.16), 0 6px 6px rgba(0,0,0,0.23);
+ }
+ #desktop-nav ul li {
+  float: left;
+ }
+ #desktop-nav ul a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  width: 12em;
+ }
+}
+@media (max-width:69.99em) {
+ #desktop-nav {
+  display: none;
+ }
+}
+#mobile-nav ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+ overflow: hidden;
+ background-color: #8bc34a;
+}
+#mobile-nav li a:hover {
+ background-color: #558b2f;
+}
+@media (min-width:70em) {
+ #mobile-nav {
+  display: none;
+ }
+}
+@media (max-width:69.99em) {
+ #mobile-nav {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.16), 0 6px 6px rgba(0,0,0,0.23);
+ }
+ #mobile-nav ul li a {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+ }
+}
+#empty-col-left {
+ order: -1;
+}
+@media (min-width:70em) {
+ #empty-col-left {
+  flex: 0 0 10%;
+ }
+}
+@media (min-width:70em) {
+ #empty-col-right {
+  flex: 0 0 10%;
+ }
+}
+#content {
+ background-color: #f5f5f5;
+ color: #212121;
+ margin-top: 1.5em;
+ position: relative;
+ border-radius: 2px;
+ box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+@media (min-width:70em) {
+ #content {
+  flex: 1;
+ }
+}
+@media (max-width:69.99em) {
+ #content {
+  margin-top: 0em;
+ }
+}
+#intro img {
+ width: 100%;
+}
+#intro h1 {
+ font-size: 2em;
+ margin-left: 0.5em;
+}
+.steps li {
+ text-align: left;
+}
+.steps li b {
+ display: inline-block;
+ text-align: right;
+ min-width: 4em;
+}
+#timeline {
+ margin-top: 1em;
+}
+#timeline svg {
+ width: 100%;
+ margin: 0 auto;
+}
+#timeline svg line {
+ stroke-width: 0.3em;
+ stroke: #aaff33;
+}
+#timeline svg line.hot {
+ stroke: #d84315;
+}
+#timeline svg line.warm {
+ stroke: #ef6c00;
+}
+#timeline svg line.room {
+ stroke: #558b2f;
+}
+#timeline svg line.cold {
+ stroke: #00838f;
+}
+#timeline svg line.freezing {
+ stroke: #1565c0;
+}
+#timeline svg line.done {
+ stroke: #558b2f;
+}
+#timeline svg .dark-line {
+ stroke-width: 0em;
+ stroke: #616161;
+}
+#timeline svg .svg-icon {
+ transform: translate(-1em,-1em);
+}
+svg circle {
+ stroke-width: 0em;
+}
+svg circle.hot {
+ fill: #d84315;
+}
+svg circle.warm {
+ fill: #ef6c00;
+}
+svg circle.room {
+ fill: #558b2f;
+}
+svg circle.cold {
+ fill: #00838f;
+}
+svg circle.freezing {
+ fill: #1565c0;
+}
+svg circle.done {
+ fill: #558b2f;
+}
+#ingredients li {
+ text-align: left;
+}
+#ingredients li b {
+ display: inline-block;
+ text-align: right;
+ min-width: 4em;
+}
+#ingredients ul {
+ background: #dddddd;
+ padding-top: 0;
+}
+.scrolling {
+ position: fixed;
+ top: 0;
+}
+.hide {
+ width: 100%;
+ visibility: hidden;
+}
+.nodisplay {
+ display: none;
+}
+.description-container {
+ display: flex;
+ margin-top: 0.5em;
+ padding-bottom: 0.3em;
+}
+.step-icon {
+ align: right;
+ width: 1.5em;
+ height: 1.5em;
+ margin-left: 5px;
+ margin-right: 5px;
+}
+.step-icon img {
+ width: 1.5em;
+ padding: 3px;
+ padding-left: 20px;
+}
+.step-description {
+ flex: 1;
+ padding-left: 0.5em;
+ padding-right: 0.5em;
+}
+#info {
+ margin: 1em 0em 0.5em 0em;
+ background-color: #9e9e9e;
+ padding: 0.4em;
+ color: #f5f5f5;
+ display: none;
+}
+#info-col {
+ display: none;
+}
+@media (min-width:70em) {
+ #info-col {
+  margin-left: 10%;
+  margin-right: 10%;
+  flex-basis: 100%;
+ }
+}
+#flavor-text {
+ font-style: italic;
+ margin: 0.75em;
+}
+#list-of-recipes {
+ list-style: none;
+}
+#list-of-recipes li {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ margin-top: 5em;
+}
+#list-of-recipes li a {
+ text-decoration: none;
+ color: #212121;
+}
+#list-of-recipes li a h1 {
+ padding: 0;
+ margin: 0;
+}
+#list-of-recipes li p {
+ padding-top: 0;
+ margin-top: 0;
+ color: #616161;
+}
+.pagination-menu-wrapper {
+ text-align: center;
+}
+.pagination-menu-wrapper .pagination-menu {
+ display: inline-block;
+}
+.pagination-menu-wrapper .pagination-menu a {
+ color: #212121;
+ float: left;
+ padding: 8px 16px;
+ text-decoration: none;
+ transition: background-color .3s;
+ border: 1px solid #d9d9d9;
+ margin-top: 0.5em;
+ margin-bottom: 0.1em;
+}
+.pagination-menu-wrapper .pagination-menu a:hover:not(.current-page) {
+ background-color: #d9d9d9;
+}
+.pagination-menu-wrapper .pagination-menu .current-page {
+ background-color: #8bc34a;
+ color: #ffffff;
+ border: 1px solid #8bc34a;
+}
+#about-page-main-section {
+ padding-left: 1em;
+}
+#about-page-main-section h2 {
+ font-size: 1.5em;
+ margin-left: 0;
+ margin-bottom: 0;
+}
