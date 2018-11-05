@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+	<style>
+		#content {
+			padding-left: 0.75em;
+			padding-right: 0.75em;
+		}
+		h2 {
+			margin-left: auto;
+		}
+		input {
+			width: 6em;
+			font-size: 1.4em;
+		}
+		table {
+			margin-top: 1em;
+			/* text-align: center; */
+			border-collapse: collapse;
+			padding: 0.25em;
+			background-color: #f5f5f5; /* Add background color so that table remains ledgible even if it in tiny views should overflow to darker three col side background. */
+		}
+		thead {
+			/* border-collapse:separate; */
+			border-bottom: 1px solid #212121;
+			background-color: #aed581;
+		}
+		/* tr td:first-child {
+			padding-left: 0.33em;
+		}
+		tr td:last-child {
+			padding-right: 0.33em;
+		} */
+		td {
+			/* padding-left: 0.33em;
+			padding-right: 0.33em; */
+			padding: 0.33em;
+		}
+		thead tr:last-child th:nth-last-child(2) {
+			/* Table header specific thicknesses */
+			border-left: 1px dashed #212121;
+			border-right: 1px dashed #212121;
+		}
+		tbody tr td:nth-last-child(4) {
+			/* First child in regular row, thickening agent */
+			text-align: center;
+		}
+		tbody td:nth-last-child(2) {
+			/* Middle thickness child in regular row, medium thickness */
+			border-left: 1px dashed #212121;
+			border-right: 1px dashed #212121;
+		}
+		.table_row_darker_background {
+			background-color: #e0e0e0;
+		}
+		/* .table_starch_type_row_header {
+			text-align: center;
+		} */
+		/* Doesn't work when entries not spanning multiple rows are introduced =(
+		tbody tr:nth-child(3n) {
+			background-color: #e0e0e0;
+		}
+		tbody tr:nth-child(4n) {
+			background-color: #e0e0e0;
+		} */
+		.ingredient-properties-table table {
+			border-collapse: collapse;
+			border: 2px solid #212121;
+		}
+		/* .ingredient-properties-table tr {
+			border: 2px solid #212121;
+		} */
+		.ingredient-properties-table th {
+			text-align: right;
+			max-width: 15em;
+			padding-right: 0.33em;
+			border-right: 1px dotted #212121;
+		}
+		.ingredient-properties-table tr:nth-child(even) {
+			background-color: #e0e0e0;
+		}
+		.ingredient-properties-table td {
+			/* border: 2px solid #212121; */
+			text-align: center;
+		}
+		.ingredient-properties-table caption {
+			caption-side: top;
+			text-align: left;
+			font-weight: bold;
+		}
+	</style>
+	<script type="text/javascript">
+		let defaultAmount = 300;
+		window.addEventListener('load', function() {
+			// Because the ingredient values reset at load to the default values embedded in the html the scaling should reflect that as well.
+			// Do not reset resulting amounts here,
+			// because all the amounts are already set to their default value,
+			// and there is no need to traverse the entire document to update them to the value they already have.
+			// adjustAllScalingFieldsToMatchPercentageScale(1);
+			var displayLiquidToScaleForAmountMl = document.getElementById('sauce-thickening-liquid-amount-ml-number').value = defaultAmount;
+		});
+		function roundNumber(number, decimalPlaces) {
+			return +(Math.round(number + "e+" + decimalPlaces)  + "e-" + decimalPlaces);
+		}
+		function scaleThickeningByAmountLiquidMl() {
+			var displayLiquidToScaleForAmountMl = document.getElementById('sauce-thickening-liquid-amount-ml-number').value;
+			if(displayLiquidToScaleForAmountMl >= 0){
+				var percentageToScaleBy = displayLiquidToScaleForAmountMl/defaultAmount;
+				updateScaling(percentageToScaleBy);
+			}
+		}
+		function updateScaling(percentageToScaleBy) {
+			if(percentageToScaleBy == 1){
+				resetAmounts();
+				return;
+			}
+			var amountElements = document.getElementsByClassName('amount');
+			for (var i = 0; i < amountElements.length; i++) {
+				var calculatedValue = percentageToScaleBy * amountElements[i].getAttribute('data-original-amount');
+				var roundedResult = roundNumber(calculatedValue, 2);
+				amountElements[i].textContent = roundedResult;
+			}
+		}
+		function resetAmounts(){
+			var amountElements = document.getElementsByClassName('amount');
+			for (var i = 0; i < amountElements.length; i++) {
+				amountElements[i].textContent = amountElements[i].getAttribute('data-original-amount');
+			}
+		}
+	</script>
+    <title>Sauce thickening calculator - Makimono</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Sauce thickening calculator">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#558b2f">
+</head>
+<body>
+  <header>
+    Makimono
+  </header>
+  <nav class="desktop-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <nav class="mobile-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <div id="three-col">
+    <div id="empty-col-left"></div>
+    <main id="content" role="main">
+	<section id="sauce-thickening-main-section">
+		<h1>Sauce thickening calculator</h1>
+		<p>
+			There are several ways to thicken sauces, many of them rely on the ratio of thickening agents to liquid you use.
+			Because I'm lazy, this is a tool for calculating how much you need for a given amount of liquid depending on how thick you want the result.
+		</p>
+		<p>Note that the default amount is scaled to 300 ml, which is the regular sized cream/heavy cream packages in Norway as they are (were?) in 2022.</p>
+		<fieldset name="sauce-thickening-liquid-amount">
+			<legend>Amount of liquid</legend>
+			<label for="sauce-thickening-liquid-amount-ml-number" hidden>Enter amount of liquid in ml that you want to thicken</label>
+			<input
+				type="number"
+				id="sauce-thickening-liquid-amount-ml-number"
+				min="0"
+				step="any"
+				value="300"
+				oninput="scaleThickeningByAmountLiquidMl()"
+				/> ml
+		</fieldset>
+		<table>
+			<thead>
+				<tr>
+					<th rowspan="2" style="padding-left: 0.33em;">Thickening agent</th>
+					<th colspan="3" style="padding-top: 0.5em;">Thickness</th>
+				</tr>
+				<tr>
+					<th>Thin</th>
+					<th>Medium</th>
+					<th>Thick</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td rowspan="2" class="table_starch_type_row_header">Roux - light</td>
+					<td>Flour: <span class="amount" data-original-amount="13.5">13.5</span>&nbsp;g</td>
+					<td>Flour: <span class="amount" data-original-amount="18">18</span>&nbsp;g</td>
+					<td>Flour: <span class="amount" data-original-amount="27">27</span>&nbsp;g</td>
+				</tr>
+				<!-- For alignment of value "Flour: value" and "Fat: value" using 1 Em Space (&emsp; supposed to be 1 em wide) and 1 Thin Space (&thinsp; supposed to be one-sixth of em wide). Consider also the En Space (&ensp; supposed to be half an em wide). -->
+				<tr>
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="9">9</span>&nbsp;g</td>
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="12">12</span>&nbsp;g</td>
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="18">18</span>&nbsp;g</td>
+				</tr>
+				<tr class="table_row_darker_background">
+					<td rowspan="2" class="table_starch_type_row_header">Roux - dark</td>
+					<td>Flour: <span class="amount" data-original-amount="27">27</span>&nbsp;g</td>
+					<td>Flour: <span class="amount" data-original-amount="36">36</span>&nbsp;g</td>
+					<td>Flour: <span class="amount" data-original-amount="54">54</span>&nbsp;g</td>
+				</tr>
+				<tr class="table_row_darker_background">
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="18">18</span>&nbsp;g</td>
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="24">24</span>&nbsp;g</td>
+					<td>Fat:&emsp;&thinsp;<span class="amount" data-original-amount="36">36</span>&nbsp;g</td>
+				</tr>
+				<tr>
+					<td>Cornstarch</td>
+					<!-- 1 tbsp cornstarch is about 7.5 grams? -->
+					<!-- 1 cup = 236.6 ml -->
+					<!-- 7.5g / 236.6ml = 0.03169907016060862 g/ml  -->
+					<!-- 0.03169907016060862 g/ml * 300 ml = 9.5 g -->
+					<!-- Nevermind all of that above, just use half of flour -->
+					<td><span class="amount" data-original-amount="9.5">6.75</span>&nbsp;g</td>
+					<td><span class="amount" data-original-amount="9.5">9.5</span>&nbsp;g</td>
+					<td><span class="amount" data-original-amount="9.5">13.5</span>&nbsp;g</td>
+				</tr>
+				<tr class="table_row_darker_background">
+					<td>Potato starch</td>
+					<!-- Supposedly 1 to 1 with corn? -->
+					<td><span class="amount" data-original-amount="9.5">6.75</span>&nbsp;g</td>
+					<td><span class="amount" data-original-amount="9.5">9.5</span>&nbsp;g</td>
+					<td><span class="amount" data-original-amount="9.5">13.5</span>&nbsp;g</td>
+				</tr>
+				<!-- <tr>
+					<td rowspan="2">Beurre manié</td>
+					<td>Flour: ToDo g</td>
+					<td>Flour: ToDo g</td>
+					<td>Flour: ToDo g</td>
+				</tr>
+				<tr>
+					<td>Fat: ToDo g</td>
+					<td>Fat: ToDo g</td>
+					<td>Fat: ToDo g</td>
+				</tr>
+				<tr>
+					<td>Agar agar</td>
+					<td>ToDo g</td>
+					<td>ToDo g</td>
+					<td>ToDo g</td>
+				</tr>
+			 -->
+			</tbody>
+		</table>
+		<h2>Notes</h2>
+		<h3>Generally</h3>
+		<p>
+			Remember that sauces tend to thicken as they cool down.
+			The temperature you will eat it at will generally be lower than what you cook it at.
+			So, if you like me love thick sauces, but feel that it often becomes too much (because you adjust the thickness while close to boiling), keep this in mind, and test for thickness after letting the sample cool down.
+			For instance let it cool down for a bit longer on the spoon, or drizzle a couple of drops on a (not heated) plate before evaluating thickness.
+		</p>
+		<p>
+			Also bear in mind that starches thicken largely by having starch particles/molecules evenly dispersed in the liquid and then puffing up by absorbing/binding to the water.
+			While some breaking down is neccessary for this to start being effective, if the starches break down too much, for instance by prolonged cooking or heavy stirring or blending, the thickening effect will be reduced.
+		</p>
+		<p>
+			For detailed explanations and to get a better idea of what's going on than what you can get out of this brief summary and amalgation of different sources on the net and experience, check out Harold McGee's "On Food and Cooking: The Science and Lore of the Kitchen" chapter about "Sauces thickened with flour and starch" (page 610 in the "First Scribner revised edition 2004" ISBN 978-0-684-80001-1).
+			For traditional starches I think it does a better job of explaining than what you will find in Nathan Myhrvold et al's the "Modernist Cuisine: the Art and Science of Cooking" chapter on thickening with starches (page 20 in volume 4 in "First edition, 2011", ISBN 978-0-9827610-0-7).
+		</p>
+		<h3>Effects of properties of other ingredients on thickening</h3>
+		<h4>Salt</h4>
+		<p>Salt (slightly) lowers gelation temperature.</p>
+		<h4>Sugar</h4>
+		<p>Sugar (slightly) increases gelation temperature.</p>
+		<h4>Acidis and alcohol</h4>
+		<p>
+			Acids and alcohols break down starch significantly.
+			So the main effects are that dispersion occurs sooner, gellation at lower temperatures, and the result becomes less viscous/more fluid/less thick.
+		</p>
+		<p>
+			Starches from roots (for instance potato or tapioca) are more affected by acidity (effects noticeable from pH&nbsp;5 and lower), while starches derived from grain (for instance wheat or corn) hold up better (effects noticeable from pH&nbsp;4 and lower).
+		</p>
+		<h3>Roux</h3>
+		<table class="ingredient-properties-table">
+			<caption>Properties for roux (wheat)</caption>
+			<tr>
+				<th>Gelation temperature</th>
+				<td>52&nbsp;℃ to 85&nbsp;℃</td>
+			</tr>
+			<tr>
+				<th>Works well with acidis</th>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<th>Works well for being frozen and reheated</th>
+				<td>Yes</td>
+			</tr>
+			<tr>
+				<th>Can be cooked for a long time</th>
+				<td>Yes (stable)</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>Grain starch</td>
+			</tr>
+		</table>
+		<p>Roux is the combination of fat and flour, cooked before adding cold liquid, or prepared ahead of time and added cold to warm liquid.</p>
+		<p>Pre-cook it for a longer time on higher heat to get a brown/dark roux. Note that if you cook it longer and/or hotter the starch breaks down more and you need to use more flour to achieve the same effect.</p>
+		<p>If you prepare it ahead of time, you can cook it untill it is only light/blond, and brown it further by reheating just before you use it.</p>
+		<p>Starch is what does the magic, so high protein/bread flours result in less thickening.</p>
+		<p>Much of the thickening is due to the starch absorbing water, so higher moisture/more damp climate calls for more starch/flour.</p>
+		<p>Note that many source say to use a 1:1 ratio of flour to butter, but this is assuming volume, often tablespoons. A 3:2 ratio of flour to fat seems to be the thing when going by weight.</p>
+		<h3>Cornstarch</h3>
+		<table class="ingredient-properties-table">
+			<caption>Properties for cornstarch</caption>
+			<tr>
+				<th>Gelation temperature</th>
+				<td>62&nbsp;℃ to 80&nbsp;℃</td>
+			</tr>
+			<tr>
+				<th>Works well with acidis</th>
+				<td>No</td>
+			</tr>
+			<tr>
+				<th>Works well for being frozen and reheated</th>
+				<td>No</td>
+			</tr>
+			<tr>
+				<th>Can be cooked for a long time</th>
+				<td>Eh (somewhat stable)</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>Grain starch</td>
+			</tr>
+		</table>
+		<p>Usage: Mix 1 to 1 with cold water before mixing into the hot sauce.</p>
+		<p>
+			You can use more water, it will thicken more slowly, reducing the chances of lumps.
+			1 part cornstarch to to 2 parts water is sometimes recommended as a safer amount.
+			But, beware that increasing the amount of water for the slurry not only increases cooking time, but if using substantially more you also should stop and consider if it will dilute the taste.
+		</p>
+		<p>Some sources say that cornstarch will loose thickening power over time as it is cooked.</p>
+		<p>
+			Generally cornstarch is supposed ot have about twice the thickening power of flour.
+			However, according to some sources thickening happens most effectively at about 80&nbsp;℃ - 85&nbsp;℃, signifficantly above the about 50&nbsp;℃ to 55&nbsp;℃ where the thickening power of flour supposedly realy starts to kick in.
+		</p>
+		<h3>Potato starch</h3>
+		<table class="ingredient-properties-table">
+			<caption>Properties for potato starch</caption>
+			<tr>
+				<th>Gelation temperature</th>
+				<td>62&nbsp;℃ to 65&nbsp;℃</td>
+			</tr>
+			<tr>
+				<th>Works well with acidis</th>
+				<td>No</td>
+			</tr>
+			<!-- <tr>
+				<th>Works well for being frozen and reheated</th>
+				<td>no</td>
+			</tr> -->
+			<tr>
+				<th>Can be cooked for a long time</th>
+				<td>No (unstable)</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>Root starch</td>
+			</tr>
+		</table>
+		<p>Breaks down and looses thickening power if stirred much.</p>
+		<h3>Tapioca (cassava)</h3>
+		<table class="ingredient-properties-table">
+			<caption>Properties for tapioca derived from cassava</caption>
+			<tr>
+				<th>Gelation temperature</th>
+				<td>52&nbsp;℃ to 65&nbsp;℃</td>
+			</tr>
+			<!-- <tr>
+				<th>Works well with acidis</th>
+				<td>No</td>
+			</tr> -->
+			<!-- <tr>
+				<th>Works well for being frozen and reheated</th>
+				<td>Yes</td>
+			</tr> -->
+			<tr>
+				<th>Can be cooked for a long time</th>
+				<td>No (unstable)</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>Root starch</td>
+			</tr>
+		</table>
+		<p>Lumps and dries in contact with hot air.</p>
+		<h3>Arrowroot</h3>
+		<table class="ingredient-properties-table">
+			<caption>Properties for arrowroot</caption>
+			<tr>
+				<th>Gelation temperature</th>
+				<td>60&nbsp;℃ to 86&nbsp;℃</td>
+			</tr>
+			<!-- <tr>
+				<th>Works well with acidis</th>
+				<td>No</td>
+			</tr> -->
+			<!-- <tr>
+				<th>Works well for being frozen and reheated</th>
+				<td>Yes</td>
+			</tr> -->
+			<tr>
+				<th>Can be cooked for a long time</th>
+				<td>No (unstable)</td>
+			</tr>
+			<tr>
+				<th>Type</th>
+				<td>Root starch</td>
+			</tr>
+		</table>
+		<p>Works poorly with dairy.</p>
+	</section>
+    </main>
+    <div id="empty-col-right"></div>
+  </div> <!-- end three-col -->
+  <nav class="mobile-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <div id="info-col">
+  <aside id="info">
+    <h3>Tags</h3>
+    <ul>
+      <li>About site</li>
+      <li>Some keywords</li>
+    </ul>
+  </aside>
+</div>
+</body>
+</html>

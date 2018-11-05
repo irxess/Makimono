@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+	<script type="text/javascript">
+		function roundNumber(number, decimalPlaces) {
+			return +(Math.round(number + "e+" + decimalPlaces)  + "e-" + decimalPlaces);
+		}
+		function calculateAmountIfTargetFixed({concentration, concentrationOther, concentrationFinal, amountTotal} = {}) {
+			amount = amountTotal * (concentrationFinal - concentrationOther)/(concentration - concentrationOther);
+			return roundNumber(amount, 2)
+			// Calculation:
+			// c1*a1 + c2*a2 = cf * at
+			// a1*c1 + (at - a1)*c2 = at*cf
+			// a1*c1 -a1*c2 + at*c2 = at*cf
+			// a1*(c1 - c2) = at*(cf - c2)
+			// a1 = at*(cf-c2)/(c1-c2)
+		}
+		function calculateAmountIfOtherFixed({concentration, concentrationOther, concentrationFinal, amountOther} = {}){
+			amount = amountOther * (concentrationOther - concentrationFinal) / (concentrationFinal - concentration);
+			return roundNumber(amount, 2)
+			// Calculation:
+			// c1*a1 + c2*a2 = cf * at
+			// c1*a1 + c2*a2 = cf * (a1 + a2)
+			// c1*a1 + c2*a2 = cf*a1 + cf*a2
+			// c1*a1 - cf*a1 = cf*a2 - c2*a2
+			// c1*a1 - cf*a1 = (cf - c2) * a2
+			// (c1*a1 - cf*a1)/(cf - c2) = a2
+			// ((c1 - cf)*a1)/(cf - c2) = a2
+			// a2 = a1*(c1-cf)/(cf-c2)
+		}
+		function findNeededAmounts() {
+			var a1 = document.getElementById('amount_1');
+			var c1 = document.getElementById('concentration_1');
+			var a2 = document.getElementById('amount_2');
+			var c2 = document.getElementById('concentration_2');
+			var at = document.getElementById('amount_target');
+			var cf = document.getElementById('concentration_final');
+			if (invalidInput(c1.value, c2.value, at.value, cf.value)) {
+				return;
+			}
+			a1.value = calculateAmountIfTargetFixed({concentration: c1.value, concentrationOther: c2.value, concentrationFinal: cf.value, amountTotal: at.value });
+			a2.value = calculateAmountIfTargetFixed({concentration: c2.value, concentrationOther: c1.value, concentrationFinal: cf.value, amountTotal: at.value });
+		}
+		function clearForm() {
+			document.getElementById('amount_1').value = '';
+			document.getElementById('concentration_1').value = '';
+			document.getElementById('amount_2').value = '';
+			document.getElementById('concentration_2').value = '';
+			document.getElementById('amount_target').value = '';
+			document.getElementById('concentration_final').value = '';
+			var nameFields = document
+				.getElementById('dilution-form')
+				.elements['name']
+				.forEach(
+					function(field){
+						field.value = '';
+					}
+				);
+		}
+		function invalidInput() {
+			for (var i = 0; i < arguments.length; i++) {
+				if (arguments[i].length === 0) {
+					return true;
+				}
+			}
+			return false;
+		}
+	</script>
+    <title>Dilution/mixing calcluator - Makimono</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Dilution/mixing calcluator">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#558b2f">
+</head>
+<body>
+  <header>
+    Makimono
+  </header>
+  <nav class="desktop-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <nav class="mobile-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <div id="three-col">
+    <div id="empty-col-left"></div>
+    <main id="content" role="main">
+	<section id="dilution-calculator-main-section">
+		<h1>Dilution calculator</h1>
+		<p>Here is a small tool for diluting liquids to get a result having a desired strength.</p>
+		<form id="dilution-form">
+			<button type="button" onclick="clearForm()">Clear all values</button>
+			<fieldset>
+				<legend>Resulting mixture</legend>
+				<div class="input-label-combination">
+					<label for="amount_target">Desired total amount/How much you want to be left with after mixing</label>
+					<input type="number" id="amount_target" min="0" step="any" />
+				</div>
+				<div class="input-label-combination">
+					<label for="concentration_final">Final concentration/Strength you want the result to have after mixing</label>
+					<input type="number" id="concentration_final" min="0" step="any" />
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>First thing you want to mix</legend>
+				<div class="input-label-combination">
+					<label for="name">[Optional] Name</label>
+					<input type="text" id="name" placeholder="First thing">
+				</div>
+				<div class="input-label-combination">
+					<label for="amount_1">Amount</label>
+					<input type="number" id="amount_1" min="0" step="any" disabled />
+				</div>
+				<div class="input-label-combination">
+					<label for="concentration_1">Concentration/Strength</label>
+					<input type="number" id="concentration_1" min="0" step="any" />
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Other thing you want to mix</legend>
+				<div class="input-label-combination">
+					<label for="name">[Optional] Name</label>
+					<input type="text" name="name" placeholder="Other thing">
+				</div>
+				<div class="input-label-combination">
+					<label for="amount_2">Amount</label>
+					<input type="number" id="amount_2" min="0" step="any" disabled />
+				</div>
+				<div class="input-label-combination">
+					<label for="concentration_2">Concentration/Strength</label>
+					<input type="number" id="concentration_2" min="0" step="any" />
+				</div>
+			</fieldset>
+			<button type="button" onclick="findNeededAmounts()">Figure out amounts needed</button>
+		</form>
+		<p>NB! Keep in mind that by definition 1L of water = 1kg of water, and that when cooking on a home scale this can be assumed to hold true for many other liquids that are mostly water, such as milk.</p>
+		<section id="examples">
+			<h2>Examples</h2>
+			<h3>Diluting vinegar</h3>
+				<p>Say that you want to use 150 ml of vinegar that has a strength of 10% (acid) for a recipe. But you only have vinegar that is 30% strong, and need to dilute it using water (which has a strength of 0%). Then in the form above you can fill inn</p>
+				<ul>
+					<li>Desired total amount: 150</li>
+					<li>Final concentration: 10</li>
+					<li>First thing you want to mix - Concentration: 30</li>
+					<li>Other thing you want to mix - Concentration: 0</li>
+				</ul>
+				<p>After pressing the <q>Figure out amounts needed</q> button, the form will be updated, and in the <q>Amount</q> field for the 30% vinegar you will see that you need 50 ml of it, while you have to add 100ml of the 0% water.</p>
+				<h3>Using butter and milk to get liquid with same fat percentage as cream</h3>
+				<p>Another example could be that you are short on cream for a recipe, but you have butter. You know that you need 250 grams of cream, and that it should be 20% fat. Say that the butter you have is 82% fat, and you also have some 3.5% fat milk. Then, in the calculator above you can fill in</p>
+				<ul>
+					<li>Desired total amount: 250</li>
+					<li>Final concentration: 20</li>
+					<li>First thing you want to mix - Concentration: 3.5</li>
+					<li>Other thing you want to mix - Concentration: 82</li>
+				</ul>
+				<p>After pressing the <q>Figure out amounts needed</q> button, the form will be updated, and in the <q>Amount</q> field for the 3.5% milk you will see that you need 197.45 grams of it, while you have to add 52.55 grams of the 82% butter.</p>
+		</section>
+		<section id="notes">
+			<h2>Notes</h2>
+			<p>Important things to note about the utility:</p>
+			<ul>
+				<li>The units used for amount and concentration can be anything, it still works out the same. That is, it doesn't matter if the concentration is in grams per liter or percent, or if the amount is in grams, liters, etc.</li>
+				<li>The amounts have to be of a consistent type. If your total desired amount is in milliliters, the suplied amounts have to be milliliters.</li>
+				<li>The concentrations have to be of a consistent type. If you are using percent for the concentration, all the concentration fields have to be in percent.</li>
+				<li>The tool rounds off the amounts, to two decimal places.</li>
+			</ul>
+		</section>
+		<section id="dilution-theory">
+			<h2>The math behind it</h2>
+			<p>Heres is an overview of the assumptions behind the tool and how it works. It is based on the following assumption:</p>
+			<blockquote>Amount 1 * Concentration 1 + Amount 2 * Concentration 2 = Target Amount * Final Concentration</blockquote>
+			<p>Or, for short</p>
+			<blockquote>a1 * c1 + a2 * c2 = at * cf</blockquote>
+			<p>Using the property that we expect the amounts to add up, that is <q>a1 + a2 = at</q>, we can find the amounts we need to add together to get the final result. We must known the concentrations, and when we do we can figure out the amounts like this:</p>
+			<ol>
+				<li>a1 * c1 + a2 * c2 = at * cf</li>
+				<li>a1 * c1 + (at - a1) * c2 = at * cf</li>
+				<li>a1 * c1 - a1 * c2 + at * c2 = at * cf</li>
+				<li>a1 * (c1 - c2) = at * (cf - c2)</li>
+				<li>a1 = at * (cf - c2) / (c1 - c2)</li>
+			</ol>
+			<p>Upon closer inspection, we can see that the last expression only relies on the final amount we want to be left with, and the concentrations. Therefore, for the cases where we rely on order, or if we want to compute the amounts simultaneously, we can similairly express the other amount as <q>a2 = at * (cf - c1) / (c2 - c1)</q>.</p>
+		</section>
+	</section>
+    </main>
+    <div id="empty-col-right"></div>
+  </div> <!-- end three-col -->
+  <nav class="mobile-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+            <li><a href="./sous_vide_temperatures.html">Sous vide temperature and times</a></li>
+            <li><a href="./sause-thickening-calculator.html">Sauce thickening calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
+  <div id="info-col">
+  <aside id="info">
+    <h3>Tags</h3>
+    <ul>
+      <li>About site</li>
+      <li>Some keywords</li>
+    </ul>
+  </aside>
+</div>
+</body>
+</html>
