@@ -1,29 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./css/main.css">
     <title>About - Makimono</title>
+    <meta name="viewport" content="width=device-width">
     <meta name="description" content="About">
-  
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#558b2f">
 </head>
 <body>
   <header>
     Makimono
   </header>
-  <nav id="desktop-nav">
+  <nav class="desktop-nav">
   <ul>
-    <li><a href="./all/page1.html">All recipes</a></li>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
     <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+        </ul>
+    </li>
   </ul>
 </nav>
-
+  <nav class="mobile-nav">
+  <ul>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
+    <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+        </ul>
+    </li>
+  </ul>
+</nav>
   <div id="three-col">
-  <div id="empty-col-left"></div>
-
-  
-<main id="content">
+    <div id="empty-col-left"></div>
+    <main id="content" role="main">
   <section id="about-page-main-section">
     <h1>About Makimono</h1>
     <p>
@@ -43,33 +76,40 @@
       You will not have to scroll past a blog post to get to the recipe.
       Ingredient amounts are included in the recipe steps, so if you want, you can place a bowl on the kitchen weight and measure ingredients as you go.
     </p>
-
     <h2>The authors</h2>
     <p>Made by Ilse and Simon.</p>
-
     <h2>Technology used</h2>
     <p>This page is made as a set of static pages, generated using python, jinja2, and a custom template format based off yaml.</p>
-
+    <p>You can check out the code on GitHub: <a href="https://github.com/irxess/Makimono-Generator">https://github.com/irxess/Makimono-Generator</a>.</p>
     <h2>Privacy</h2>
     <p>
       We don't collect anything.
       (Except recipes =P)
     </p>
-    <p>But seeing as you are (probably) reading this on the internet, we assume you know that every government on the face of the planet not half-assing their security services knwos that you are reading this, and probably also any other enterprises interested in your activity.</p>
+    <p>But seeing as you are (probably) reading this on the internet, we assume you know that every government on the face of the planet that has security services with a presence on the internet knwos that you are reading this, as do most likely any other enterprises interested in your activity.</p>
   </section>
-</main>
-
-
-  <div id="empty-col-right"></div>
-
-  <nav id="mobile-nav">
+    </main>
+    <div id="empty-col-right"></div>
+  </div> <!-- end three-col -->
+  <nav class="mobile-nav">
   <ul>
-    <li><a href="./all/page1.html">All recipes</a></li>
+    <li>
+        <a tabindex="0">Recipes&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./all/page-1.html">Browse</a></li>
+            <li><a href="./all-recipes-overview.html">List</a></li>
+        </ul>
+    </li>
     <li><a href="./about.html">About</a></li>
+    <li>
+        <a tabindex="0">Utilities&#9662;</a>
+        <ul class="dropdown">
+            <li><a href="./dilution_calculator.html">Dilution calculator</a></li>
+        </ul>
+    </li>
   </ul>
 </nav>
-
-<div id="info-col">
+  <div id="info-col">
   <aside id="info">
     <h3>Tags</h3>
     <ul>
